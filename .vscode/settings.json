@@ -1,0 +1,10 @@
+{
+  "code-runner.executorMap": {
+    "python": "python3"
+  },
+  "python.linting.mypyEnabled": false,
+  "code-runner.fileDirectoryAsCwd": true,
+  "code-runner.runInTerminal": true,
+  "code-runner.saveFileBeforeRun": true,
+  "code-runner.ignoreSelection": true
+}
