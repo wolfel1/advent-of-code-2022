@@ -6,4 +6,10 @@ def get_data(data):
 
 data = """"""
 
-utils.find_solution("\n", data, 0, get_data)
+assert get_data(data) == 0
+
+with open("input.txt") as file:
+    data = file.read()
+
+
+print(get_data(data))
