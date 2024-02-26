@@ -2,46 +2,85 @@
 
 import re
 
+class Node:
+  def __init__(self, name, parent = None, size = 0):
+    self.name = name
+    self.parent = parent
+    self.size = size
+    self.childs = set()
+
+  def addChild(self, child):
+    self.childs.add(child)
+
+  def hasChilds(self):
+    return len(self.childs) != 0
+
+  def getChilds(self):
+    return self.childs
+
+  def get_parent(self):
+    return self.parent
+
+  def get_size(self):
+    return self.size
+
+  def set_size(self, size):
+    self.size = size
+
+def get_directory_sizes(current_node: Node):
+    total_size = 0
+    for node in current_node.getChilds():
+      if node.hasChilds():
+        get_directory_sizes(node)
+      total_size += node.get_size()
+
+    current_node.set_size(total_size)
+
+total_size = 0
+def get_total_size(current_node: Node):
+  global total_size
+
+  for node in current_node.getChilds():
+    if node.hasChilds():
+      get_total_size(node)
+      size = node.get_size()
+      if size <= 100000:
+        total_size += size
+
 
 def get_data(data):
   lines = data.split("\n")
 
-  directories = dict()
-  current_directory = ""
+  root = Node("/")
+  current_node = root
+  lines.pop(0)
   for line in lines:
     if line.startswith("$ cd"):
       directory = line.split("cd ", 1)[1]
-      directories[directory] = list()
-      current_directory = directory
-    elif line.startswith("dir"):
-      directory = line.split("dir ", 1)[1]
-      directories[current_directory].append(directory)
-
-
-  dir_sizes = dict()
-  for line in lines:
-    if line.startswith("$ cd"):
-      directory = line.split("cd ", 1)[1]
-      dir_sizes[directory] = 0
-      current_directory = directory
-    elif line.startswith("dir"):
-      directory = line.split("dir ", 1)[1]
-      dir_sizes[current_directory] += directories.get(directory) or 0
+      if directory != "..":
+        node = Node(directory, current_node)
+        current_node.addChild(node)
+        current_node = node
+      else:
+        current_node = current_node.get_parent()
     elif line[0].isdigit():
+      name = re.findall(r'\s(.*)', line)[0]
       size = list(map(int, re.findall(r'\d+', line)))[0]
-      dir_sizes[current_directory] += size
+      current_node.addChild(Node(name, current_node, size))
+
+  get_directory_sizes(root)
+
+  get_total_size(root)
+  return total_size
 
 
-  for key, item in reversed(directories.items()):
-    for directory in item:
-      dir_sizes[key] += dir_sizes[directory]
 
-  total = 0
-  for value in dir_sizes.values():
-    if value < 100000:
-      total += value
+  # total = 0
+  # for value in dir_sizes.values():
+  #   if value < 100000:
+  #     total += value
 
-  return total
+  # return total
 
 data = """$ cd /
 $ ls
