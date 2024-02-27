@@ -63,13 +63,15 @@ def get_data(data):
 
   get_directory_sizes(root)
 
-  total = 0
+
+  needed = 30_000_000 - (70_000_000 - root.get_size())
+  smallest = 70_000_000
   for dir in directories:
     size = dir.get_size()
-    if size <= 100000:
-      total += size
+    if size >= needed and size < smallest:
+        smallest = size
 
-  return total
+  return smallest
 
 
 data = """$ cd /
@@ -96,7 +98,7 @@ $ ls
 5626152 d.ext
 7214296 k"""
 
-assert get_data(data) == 95437
+assert get_data(data) == 24_933_642
 
 with open("input.txt") as file:
     data = file.read()
