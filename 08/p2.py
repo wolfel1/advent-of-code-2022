@@ -93,38 +93,46 @@ def get_data(data):
 
         size = actual_tree.get_size()
         tree = actual_tree
+        tree_count = 0
         while tree is not None:
           tree = tree.get_top()
           if tree is not None:
-            scenic_score *= tree.get_size()
-            if tree.get_size() > size:
+            tree_count += 1
+            if tree.get_size() >= size:
               break
+        scenic_score *= tree_count if tree_count != 0 else 1
 
         tree = actual_tree
+        tree_count = 0
         while tree is not None:
           tree = tree.get_bottom()
           if tree is not None:
-            scenic_score *= tree.get_size()
-            if tree.get_size() > size:
+            tree_count += 1
+            if tree.get_size() >= size:
               break
 
+        scenic_score *= tree_count if tree_count != 0 else 1
 
         tree = actual_tree
+        tree_count = 0
         while tree is not None:
           tree = tree.get_left()
           if tree is not None:
-            scenic_score *= tree.get_size()
-            if tree.get_size() > size:
+            tree_count += 1
+            if tree.get_size() >= size:
               break
+        scenic_score *= tree_count if tree_count != 0 else 1
 
 
         tree = actual_tree
+        tree_count = 0
         while tree is not None:
           tree = tree.get_right()
           if tree is not None:
-            scenic_score *= tree.get_size()
-            if tree.get_size() > size:
+            tree_count += 1
+            if tree.get_size() >= size:
               break
+        scenic_score *= tree_count if tree_count != 0 else 1
 
       if scenic_score > overal_scenic_score:
         overal_scenic_score = scenic_score
