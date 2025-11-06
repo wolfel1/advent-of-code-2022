@@ -1,4 +1,34 @@
+def move_up(front, knot):
+    if abs(front[1] - knot[1]) >= 2:
+      knot[1] += 1
+      follow_horizontal(front, knot)
 
+def move_left(front, knot):
+    if abs(front[0] - knot[0]) >= 2:
+      knot[0] -= 1
+      follow_vertical(front, knot)
+
+def move_right(front, knot):
+    if abs(front[0] - knot[0]) >= 2:
+      knot[0] += 1
+      follow_vertical(front, knot)
+
+def move_down(front, knot):
+    if abs(front[1] - knot[1]) >= 2:
+      knot[1] -= 1
+      follow_horizontal(front, knot)
+
+def follow_vertical(front, knot):
+    if knot[1] == front[1] -1:
+      knot[1] += 1
+    elif  knot[1] == front[1] +1:
+      knot[1] -= 1
+
+def follow_horizontal(front, knot):
+    if knot[0] == front[0] -1:
+      knot[0] += 1
+    elif  knot[0] == front[0] +1:
+      knot[0] -= 1
 
 def get_data(data):
   lines = data.split("\n")
@@ -11,36 +41,16 @@ def get_data(data):
     for i in range(0, int(line[1])):
       if line[0] == "U":
         head[1] += 1
-        if abs(head[1] - tail[1]) >= 2:
-          tail[1] += 1
-          if tail[0] == head[0] -1:
-            tail[0] += 1
-          elif  tail[0] == head[0] +1:
-            tail[0] -= 1
+        move_up(head, tail)
       elif line[0] == "L":
         head[0] -= 1
-        if abs(head[0] - tail[0]) >= 2:
-          tail[0] -= 1
-          if tail[1] == head[1] -1:
-            tail[1] += 1
-          elif  tail[1] == head[1] +1:
-            tail[1] -= 1
+        move_left(head, tail)
       elif line[0] == "R":
         head[0] += 1
-        if abs(head[0] - tail[0]) >= 2:
-          tail[0] += 1
-          if tail[1] == head[1] -1:
-            tail[1] += 1
-          elif  tail[1] == head[1] +1:
-            tail[1] -= 1
+        move_right(head, tail)
       elif line[0] == "D":
         head[1] -= 1
-        if abs(head[1] - tail[1]) >= 2:
-          tail[1] -= 1
-          if tail[0] == head[0] -1:
-            tail[0] += 1
-          elif  tail[0] == head[0] +1:
-            tail[0] -= 1
+        move_down(head, tail)
             
       tail_covered.append(tail.copy())
     
